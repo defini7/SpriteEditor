@@ -16,6 +16,8 @@ cEditorFrame::~cEditorFrame()
 {
 	delete[] m_pSprite;
 	delete m_Canvas;
+	delete m_StatusBar;
+	delete m_ZoomSlider;
 }
 
 void cEditorFrame::SetColour(int c)
@@ -74,8 +76,10 @@ bool cEditorFrame::Open(wxString sFileName)
 bool cEditorFrame::New(int r, int c)
 {
 	delete[] m_pSprite;
+
 	m_pSprite = new unsigned char[r * c]{ 0 };
 	m_Canvas->SetSpriteData(r, c, m_pSprite);
+
 	spr = Sprite(c, r);
 
 	return false;
