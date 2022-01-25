@@ -7,7 +7,7 @@ class cMain : public wxMDIParentFrame
 {
 public:
 	cMain();
-	~cMain();
+	virtual ~cMain();
 
 	void OnSelectColour(wxCommandEvent& evt);
 
@@ -20,7 +20,7 @@ private:
 	void OnMenuSave(wxCommandEvent& evt);
 	void OnMenuExit(wxCommandEvent& evt);
 
-	long lSpriteWidth = -1, lSpriteHeight = -1;
+	int m_nSpriteWidth = -1, m_nSpriteHeight = -1;
 
 	wxDECLARE_EVENT_TABLE();
 };
