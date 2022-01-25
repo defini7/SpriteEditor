@@ -61,18 +61,21 @@ cMain::cMain() : wxMDIParentFrame(nullptr, wxID_ANY, "github.com/defini7 - Sprit
 cMain::~cMain()
 {
 	delete m_ToolBar;
-	delete m_MenuBar;
 }
 
 void cMain::OnMenuNew(wxCommandEvent& evt)
 {
-	lSpriteWidth = wxGetNumberFromUser("Select a width of sprite", "", "Sprite options", lSpriteWidth, 1L, 100L, this, wxDefaultPosition);
-	lSpriteHeight = wxGetNumberFromUser("Select a height of sprite", "", "Select height of sprite", lSpriteHeight, 1L, 100L, this, wxDefaultPosition);
-	if (lSpriteWidth < 0 || lSpriteHeight < 0)
-		lSpriteWidth = 16, lSpriteHeight = 16;
+	m_nSpriteWidth = wxGetNumberFromUser("Select a width of sprite", "", "Sprite options", m_nSpriteWidth, 1L, 100L, this, wxDefaultPosition);
+	m_nSpriteHeight = wxGetNumberFromUser("Select a height of sprite", "", "Select height of sprite", m_nSpriteHeight, 1L, 100L, this, wxDefaultPosition);
+
+	if (m_nSpriteWidth < 0 || m_nSpriteHeight < 0)
+		m_nSpriteWidth = 16, m_nSpriteHeight = 16;
+
 	cEditorFrame* f = new cEditorFrame(this, "Edit sprite");
-	f->New(int(lSpriteWidth), int(lSpriteHeight));
+
+	f->New(m_nSpriteWidth, m_nSpriteHeight);
 	f->Show();
+
 	evt.Skip();
 }
 
@@ -94,9 +97,7 @@ void cMain::OnMenuSave(wxCommandEvent& evt)
 	{
 		wxFileDialog dlg(this, "Save Sprite file", "", "", ".spr Files (*spr)|*.spr", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		if (dlg.ShowModal() == wxID_OK)
-		{
 			((cEditorFrame*)GetActiveChild())->Save(dlg.GetPath());
-		}
 	}
 }
 
@@ -109,8 +110,7 @@ void cMain::OnMenuExit(wxCommandEvent& evt)
 void cMain::OnSelectColour(wxCommandEvent& evt)
 {
 	int colour = evt.GetId() - 10100;
+
 	if (GetActiveChild() != nullptr)
-	{
 		((cEditorFrame*)GetActiveChild())->SetColour(colour);
-	}
 }
