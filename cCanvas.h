@@ -7,12 +7,12 @@ class cCanvas : public wxHVScrolledWindow
 {
 public:
 	cCanvas(wxWindow *parent);
-	~cCanvas();
+	virtual ~cCanvas();
 
 private:
 	int m_nPixelSize = 8;
 	unsigned char* m_pSprite = nullptr;
-	wxColour palette[16];
+	wxColour m_rgPalette[16];
 
 public:
 	void SetPixelSize(int n);
