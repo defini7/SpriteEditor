@@ -5,8 +5,8 @@
 #include "wx/dcbuffer.h"
 
 wxBEGIN_EVENT_TABLE(cCanvas, wxHVScrolledWindow)
-EVT_PAINT(cCanvas::OnPaint)
-EVT_LEFT_DOWN(cCanvas::OnMouseLeftDown)
+	EVT_PAINT(cCanvas::OnPaint)
+	EVT_LEFT_DOWN(cCanvas::OnMouseLeftDown)
 wxEND_EVENT_TABLE()
 
 cCanvas::cCanvas(wxWindow* parent) : wxHVScrolledWindow(parent, wxID_ANY)
@@ -14,26 +14,27 @@ cCanvas::cCanvas(wxWindow* parent) : wxHVScrolledWindow(parent, wxID_ANY)
 	SetRowColumnCount(40, 40);
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-	palette[0] = wxColour(0, 0, 0);
-	palette[1] = wxColour(0, 0, 128);
-	palette[2] = wxColour(0, 128, 0);
-	palette[3] = wxColour(0, 128, 128);
-	palette[4] = wxColour(128, 0, 0);
-	palette[5] = wxColour(128, 0, 128);
-	palette[6] = wxColour(128, 128, 0);
-	palette[7] = wxColour(192, 192, 192);
-	palette[8] = wxColour(128, 128, 128);
-	palette[9] = wxColour(0, 0, 255);
-	palette[10] = wxColour(0, 255, 0);
-	palette[11] = wxColour(0, 255, 255);
-	palette[12] = wxColour(255, 0, 0);
-	palette[13] = wxColour(255, 0, 255);
-	palette[14] = wxColour(255, 255, 0);
-	palette[15] = wxColour(255, 255, 255);
+	m_rgPalette[0] = wxColour(0, 0, 0);
+	m_rgPalette[1] = wxColour(0, 0, 128);
+	m_rgPalette[2] = wxColour(0, 128, 0);
+	m_rgPalette[3] = wxColour(0, 128, 128);
+	m_rgPalette[4] = wxColour(128, 0, 0);
+	m_rgPalette[5] = wxColour(128, 0, 128);
+	m_rgPalette[6] = wxColour(128, 128, 0);
+	m_rgPalette[7] = wxColour(192, 192, 192);
+	m_rgPalette[8] = wxColour(128, 128, 128);
+	m_rgPalette[9] = wxColour(0, 0, 255);
+	m_rgPalette[10] = wxColour(0, 255, 0);
+	m_rgPalette[11] = wxColour(0, 255, 255);
+	m_rgPalette[12] = wxColour(255, 0, 0);
+	m_rgPalette[13] = wxColour(255, 0, 255);
+	m_rgPalette[14] = wxColour(255, 255, 0);
+	m_rgPalette[15] = wxColour(255, 255, 255);
 }
 
 cCanvas::~cCanvas()
 {
+	delete[] m_pSprite;
 }
 
 void cCanvas::SetPixelSize(int n)
@@ -86,7 +87,7 @@ void cCanvas::OnDraw(wxDC& dc)
 
 			if (colour < 16)
 			{
-				brush.SetColour(palette[colour]);
+				brush.SetColour(m_rgPalette[colour]);
 				brush.SetStyle(wxBRUSHSTYLE_SOLID);
 			}
 			else
