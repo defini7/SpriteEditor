@@ -7,10 +7,10 @@ class cApp : public wxApp
 {
 public:
 	cApp();
-	~cApp();
+	virtual ~cApp();
 
 private:
-	cMain* wxFrame = nullptr;
+	cMain* m_frame = nullptr;
 
 public:
 	virtual bool OnInit();
