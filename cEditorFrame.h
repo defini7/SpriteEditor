@@ -140,7 +140,7 @@ class cEditorFrame : public wxMDIChildFrame
 {
 public:
 	cEditorFrame(wxMDIParentFrame* parent, wxString sName);
-	~cEditorFrame();
+	virtual ~cEditorFrame();
 
 	void SetColour(int c);
 	bool Save(wxString sFileName);
