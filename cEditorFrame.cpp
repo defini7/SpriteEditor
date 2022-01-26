@@ -15,9 +15,7 @@ cEditorFrame::cEditorFrame(wxMDIParentFrame* parent, wxString sName) : wxMDIChil
 cEditorFrame::~cEditorFrame()
 {
 	delete[] m_pSprite;
-	delete m_Canvas;
 	delete m_StatusBar;
-	delete m_ZoomSlider;
 }
 
 void cEditorFrame::SetColour(int c)
