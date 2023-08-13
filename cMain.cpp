@@ -43,51 +43,51 @@ cMain::cMain() : wxMDIParentFrame(nullptr, wxID_ANY, "github.com/defini7 - Sprit
 
 	for (int i = 0; i < 16; i++)
 	{
-		wxButton* colour_b = new wxButton(m_ToolBar, 10100 + i, "", wxDefaultPosition, wxSize(40, 24), 0);
-		colour_b->SetBackgroundColour(palette[i]);
-		colour_b->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cMain::OnSelectColour), nullptr, this);
-		m_ToolBar->AddControl(colour_b);
+		wxButton* btnCol = new wxButton(m_ToolBar, 10100 + i, "", wxDefaultPosition, wxSize(40, 24), 0);
+		btnCol->SetBackgroundColour(palette[i]);
+		btnCol->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cMain::OnSelectColour), nullptr, this);
+		m_ToolBar->AddControl(btnCol);
 	}
 
-	wxButton* alpha_b = new wxButton(m_ToolBar, 10100 + 16, "ALPHA", wxDefaultPosition, wxDefaultSize, 0);
-	alpha_b->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cMain::OnSelectColour), nullptr, this);
+	wxButton* btnAlpha = new wxButton(m_ToolBar, 10100 + 16, "ALPHA", wxDefaultPosition, wxDefaultSize, 0);
+	btnAlpha->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cMain::OnSelectColour), nullptr, this);
 	
-	m_ToolBar->AddControl(alpha_b);
-
+	m_ToolBar->AddControl(btnAlpha);
 	m_ToolBar->Realize();
-
 }
 
 cMain::~cMain()
 {
-	delete m_ToolBar;
 }
 
 void cMain::OnMenuNew(wxCommandEvent& evt)
 {
-	m_nSpriteWidth = wxGetNumberFromUser("Select a width of sprite", "", "Sprite options", m_nSpriteWidth, 1L, 100L, this, wxDefaultPosition);
-	m_nSpriteHeight = wxGetNumberFromUser("Select a height of sprite", "", "Select height of sprite", m_nSpriteHeight, 1L, 100L, this, wxDefaultPosition);
+	cDialogDimensions dlg(this);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		m_nSpriteWidth = dlg.GetSpriteWidth();
+		m_nSpriteHeight = dlg.GetSpriteHeight();
 
-	if (m_nSpriteWidth < 0 || m_nSpriteHeight < 0)
-		m_nSpriteWidth = 16, m_nSpriteHeight = 16;
+		cEditorFrame* f = new cEditorFrame(this, "Edit sprite");
 
-	cEditorFrame* f = new cEditorFrame(this, "Edit sprite");
-
-	f->New(m_nSpriteWidth, m_nSpriteHeight);
-	f->Show();
+		f->New(m_nSpriteHeight, m_nSpriteWidth);
+		f->Show();
+	}
 
 	evt.Skip();
 }
 
 void cMain::OnMenuOpen(wxCommandEvent& evt)
 {
-	wxFileDialog dlg(this, "Open Sprite file", "", "", ".spr Files (*.spr)|.spr", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog dlg(this, "Open Sprite file", "", "", ".spr Files (*.spr)|*.spr", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		cEditorFrame* f = new cEditorFrame(this, dlg.GetPath());
+
 		f->Open(dlg.GetPath());
 		f->Show();
 	}
+
 	evt.Skip();
 }
 
@@ -95,7 +95,7 @@ void cMain::OnMenuSave(wxCommandEvent& evt)
 {
 	if (GetActiveChild() != nullptr)
 	{
-		wxFileDialog dlg(this, "Save Sprite file", "", "", ".spr Files (*spr)|*.spr", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		wxFileDialog dlg(this, "Save Sprite file", "", "", ".spr Files (*.spr)|*.spr", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		if (dlg.ShowModal() == wxID_OK)
 			((cEditorFrame*)GetActiveChild())->Save(dlg.GetPath());
 	}

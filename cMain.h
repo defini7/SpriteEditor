@@ -1,7 +1,8 @@
 #pragma once
 
 #include "wx/wx.h"
-#include "wx/numdlg.h"
+
+#include "cDialogDimensions.h"
 
 class cMain : public wxMDIParentFrame
 {

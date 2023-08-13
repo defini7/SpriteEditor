@@ -4,7 +4,7 @@ wxBEGIN_EVENT_TABLE(cEditorFrame, wxMDIChildFrame)
 	EVT_SLIDER(20001, cEditorFrame::OnZoomChange)
 wxEND_EVENT_TABLE()
 
-cEditorFrame::cEditorFrame(wxMDIParentFrame* parent, wxString sName) : wxMDIChildFrame(parent, wxID_ANY, sName)
+cEditorFrame::cEditorFrame(wxMDIParentFrame* parent, const wxString& sName) : wxMDIChildFrame(parent, wxID_ANY, sName)
 {
 	m_Canvas = new cCanvas(this);
 
@@ -15,7 +15,7 @@ cEditorFrame::cEditorFrame(wxMDIParentFrame* parent, wxString sName) : wxMDIChil
 cEditorFrame::~cEditorFrame()
 {
 	delete[] m_pSprite;
-	delete m_StatusBar;
+	delete m_sprData;
 }
 
 void cEditorFrame::SetColour(int c)
@@ -23,52 +23,52 @@ void cEditorFrame::SetColour(int c)
 	m_Canvas->m_nColour = c;
 }
 
-bool cEditorFrame::Save(wxString sFileName)
+bool cEditorFrame::Save(const wxString& sFileName)
 {
-	for (int i = 0; i < spr.nWidth; i++)
-		for (int j = 0; j < spr.nHeight; j++)
+	for (int i = 0; i < m_sprData->nWidth; i++)
+		for (int j = 0; j < m_sprData->nHeight; j++)
 		{
-			short colour = m_pSprite[j * spr.nHeight + i];
+			short colour = m_pSprite[j * m_sprData->nHeight + i];
 
 			if (colour == 16)
 			{
-				spr.SetColour(i, j, 0);
-				spr.SetGlyph(i, j, L' ');
+				m_sprData->SetColour(i, j, 0);
+				m_sprData->SetGlyph(i, j, L' ');
 			}
 			else
 			{
-				spr.SetColour(i, j, colour);
-				spr.SetGlyph(i, j, 0x2588);
+				m_sprData->SetColour(i, j, colour);
+				m_sprData->SetGlyph(i, j, 0x2588);
 			}
 		}
 
-	return spr.Save(sFileName.wc_str());
+	return m_sprData->Save(sFileName.wc_str());
 }
 
-bool cEditorFrame::Open(wxString sFileName)
+bool cEditorFrame::Open(const wxString& sFileName)
 {
-	if(!spr.Load(sFileName.wc_str()))
-		return false;
-	else
+	m_sprData = new Sprite();
+
+	if (m_sprData->Load(sFileName.wc_str()))
 	{
 		delete[] m_pSprite;
-		m_pSprite = new unsigned char[spr.nWidth * spr.nHeight]{ 0 };
+		m_pSprite = new unsigned char[m_sprData->nWidth * m_sprData->nHeight]{ 0 };
 
-		for (int i = 0; i < spr.nWidth; i++)
-			for (int j = 0; j < spr.nHeight; j++)
+		for (int i = 0; i < m_sprData->nWidth; i++)
+			for (int j = 0; j < m_sprData->nHeight; j++)
 			{
-				wchar_t glyph = spr.GetGlyph(i, j);
-				short colour = spr.GetColour(i, j);
+				short glyph = m_sprData->GetGlyph(i, j);
+				short colour = m_sprData->GetColour(i, j);
 
-				if (glyph == L' ')
-					m_pSprite[j * spr.nWidth + i] = 16;
-				else
-					m_pSprite[j * spr.nWidth + i] = colour & 0x000F;
+				m_pSprite[j * m_sprData->nWidth + i] = (glyph == L' ') ? 16 : colour & 0x000F;
 			}
 
-		m_Canvas->SetSpriteData(spr.nHeight, spr.nWidth, m_pSprite);
+		m_Canvas->SetSpriteData(m_sprData->nHeight, m_sprData->nWidth, m_pSprite);
+
 		return true;
 	}
+
+	return false;
 }
 
 bool cEditorFrame::New(int r, int c)
@@ -78,9 +78,9 @@ bool cEditorFrame::New(int r, int c)
 	m_pSprite = new unsigned char[r * c]{ 0 };
 	m_Canvas->SetSpriteData(r, c, m_pSprite);
 
-	spr = Sprite(c, r);
+	m_sprData = new Sprite(c, r);
 
-	return false;
+	return true;
 }
 
 void cEditorFrame::OnZoomChange(wxCommandEvent& evt)
