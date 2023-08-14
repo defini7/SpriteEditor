@@ -12,7 +12,7 @@ public:
 private:
 	int m_nPixelSize = 8;
 	unsigned char* m_pSprite = nullptr;
-	wxColour m_rgPalette[16];
+	wxColour m_palette[16];
 
 public:
 	void SetPixelSize(int n);

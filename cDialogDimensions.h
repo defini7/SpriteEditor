@@ -14,6 +14,7 @@ public:
 private:
 	wxStaticText* m_lblWidth;
 	wxTextCtrl* m_txtWidth;
+
 	wxStaticText* m_lblHeight;
 	wxTextCtrl* m_txtHeight;
 

@@ -51,7 +51,7 @@ cMain::cMain() : wxMDIParentFrame(nullptr, wxID_ANY, "github.com/defini7 - Sprit
 
 	wxButton* btnAlpha = new wxButton(m_ToolBar, 10100 + 16, "ALPHA", wxDefaultPosition, wxDefaultSize, 0);
 	btnAlpha->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cMain::OnSelectColour), nullptr, this);
-	
+
 	m_ToolBar->AddControl(btnAlpha);
 	m_ToolBar->Realize();
 }
@@ -79,13 +79,19 @@ void cMain::OnMenuNew(wxCommandEvent& evt)
 
 void cMain::OnMenuOpen(wxCommandEvent& evt)
 {
-	wxFileDialog dlg(this, "Open Sprite file", "", "", ".spr Files (*.spr)|*.spr", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog dlg(this, "Open Sprite file", "", "", ".spr Files (*.spr)|*.spr", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		cEditorFrame* f = new cEditorFrame(this, dlg.GetPath());
+		wxArrayString files;
+		dlg.GetPaths(files);
 
-		f->Open(dlg.GetPath());
-		f->Show();
+		for (const auto& file : files)
+		{
+			cEditorFrame* f = new cEditorFrame(this, file);
+
+			f->Open(file);
+			f->Show();
+		}
 	}
 
 	evt.Skip();

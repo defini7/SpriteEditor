@@ -14,22 +14,22 @@ cCanvas::cCanvas(wxWindow* parent) : wxHVScrolledWindow(parent, wxID_ANY)
 	SetRowColumnCount(40, 40);
 	SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-	m_rgPalette[0] = wxColour(0, 0, 0);
-	m_rgPalette[1] = wxColour(0, 0, 128);
-	m_rgPalette[2] = wxColour(0, 128, 0);
-	m_rgPalette[3] = wxColour(0, 128, 128);
-	m_rgPalette[4] = wxColour(128, 0, 0);
-	m_rgPalette[5] = wxColour(128, 0, 128);
-	m_rgPalette[6] = wxColour(128, 128, 0);
-	m_rgPalette[7] = wxColour(192, 192, 192);
-	m_rgPalette[8] = wxColour(128, 128, 128);
-	m_rgPalette[9] = wxColour(0, 0, 255);
-	m_rgPalette[10] = wxColour(0, 255, 0);
-	m_rgPalette[11] = wxColour(0, 255, 255);
-	m_rgPalette[12] = wxColour(255, 0, 0);
-	m_rgPalette[13] = wxColour(255, 0, 255);
-	m_rgPalette[14] = wxColour(255, 255, 0);
-	m_rgPalette[15] = wxColour(255, 255, 255);
+	m_palette[0] = wxColour(0, 0, 0);
+	m_palette[1] = wxColour(0, 0, 128);
+	m_palette[2] = wxColour(0, 128, 0);
+	m_palette[3] = wxColour(0, 128, 128);
+	m_palette[4] = wxColour(128, 0, 0);
+	m_palette[5] = wxColour(128, 0, 128);
+	m_palette[6] = wxColour(128, 128, 0);
+	m_palette[7] = wxColour(192, 192, 192);
+	m_palette[8] = wxColour(128, 128, 128);
+	m_palette[9] = wxColour(0, 0, 255);
+	m_palette[10] = wxColour(0, 255, 0);
+	m_palette[11] = wxColour(0, 255, 255);
+	m_palette[12] = wxColour(255, 0, 0);
+	m_palette[13] = wxColour(255, 0, 255);
+	m_palette[14] = wxColour(255, 255, 0);
+	m_palette[15] = wxColour(255, 255, 255);
 }
 
 cCanvas::~cCanvas()
@@ -86,7 +86,7 @@ void cCanvas::OnDraw(wxDC& dc)
 
 			if (colour < 16)
 			{
-				brush.SetColour(m_rgPalette[colour]);
+				brush.SetColour(m_palette[colour]);
 				brush.SetStyle(wxBRUSHSTYLE_SOLID);
 			}
 			else
